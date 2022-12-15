@@ -34,45 +34,27 @@ public class Requester {
 				sendMessage(message);
 
 				if (message.equalsIgnoreCase("1")) {
+					
 					for (int i = 0; i < 4; i++) {
-						message = (String) in.readObject();
-						System.out.println(message);
-						message = input.nextLine();
-						sendMessage(message);
+					message = (String) in.readObject();
+					System.out.println(message);
+					message = input.nextLine();
+					sendMessage(message);
 					}
+
+				} else if (message.equalsIgnoreCase("2")) {
+					
+					message = (String) in.readObject();
+					System.out.println(message);
+					message = input.nextLine();
+					sendMessage(message);
+
+					message = (String) in.readObject();
+					System.out.println(message);
+					message = input.nextLine();
+					sendMessage(message);
+
 				}
-
-				// else if (message.equalsIgnoreCase("2")) {
-				// // Option 1
-				// /*
-				// * message = (String)in.readObject();
-				// * System.out.println(message);
-				// *
-				// * String[] books = message.split("\\?");
-				// *
-				// * for(int i=0;i<books.length;i++)
-				// * {
-				// * System.out.println(books[i]);
-				// *
-				// * String[] components = books[i].split("\\*");
-				// *
-				// * System.out.println("Book "+i+" "+components[0]+" "+components[1]);
-				// * }
-				// */
-
-				// // Option 2
-				// message = (String) in.readObject();
-				// int numBooks = Integer.parseInt(message);
-
-				// for (int i = 0; i < numBooks; i++) {
-				// message = (String) in.readObject();
-				// System.out.println(message);
-
-				// message = (String) in.readObject();
-				// System.out.println(message);
-				// }
-
-				// }
 
 				message = (String) in.readObject();
 				System.out.println(message);

@@ -14,13 +14,29 @@ public class Users {
         userList.add(temp);
     }
 
-    public synchronized String getList() {
+    public synchronized String getUserList() {
         Iterator<Employee> iter = userList.iterator();
         Employee temp;
         String result = "";
         while (iter.hasNext()) {
             temp = iter.next();
-            result = result + temp.getName() + "*" + temp.getID() + "?";
+            result = result + temp.getName() + "*"
+                    + temp.getID() + "*"
+                    + temp.getEmail() + "*"
+                    + temp.getDepartment() + "?";
+        }
+
+        return result;
+    }
+
+    public synchronized String getLoginDetails() {
+        Iterator<Employee> iter = userList.iterator();
+        Employee temp;
+        String result = "";
+        while (iter.hasNext()) {
+            temp = iter.next();
+            result = result + temp.getEmail() + "*"
+                    + temp.getID() + "?";
         }
 
         return result;

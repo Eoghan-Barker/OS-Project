@@ -9,6 +9,7 @@ public class Provider {
 	ObjectInputStream in;
 	String message;
 	ServerThread s;
+	Users userList;
 
 	Provider() {
 	}
@@ -17,12 +18,13 @@ public class Provider {
 		try {
 			// 1. creating a server socket
 			providerSocket = new ServerSocket(2004, 10);
+			userList = new Users();
 			// 2. Wait for connection
 			while (true) {
 				System.out.println("Waiting for connection");
 				connection = providerSocket.accept();
 				System.out.println("Connection received from " + connection.getInetAddress().getHostName());
-				s = new ServerThread(connection);
+				s = new ServerThread(connection, userList);
 				s.start();
 			}
 		} catch (IOException ioException) {

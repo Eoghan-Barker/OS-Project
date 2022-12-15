@@ -11,8 +11,9 @@ public class ServerThread extends Thread {
 	private String message, message2, message3, message4;
 	private Users users;
 
-	public ServerThread(Socket s) {
+	public ServerThread(Socket s, Users u) {
 		socket = s;
+		users = u;
 	}
 
 	public void run() {
@@ -35,6 +36,7 @@ public class ServerThread extends Thread {
 								"2. Log-in");
 				message = (String) in.readObject();
 
+				// Handle register
 				if (message.equalsIgnoreCase("1")) {
 					sendMessage("Enter username:");
 					message = (String) in.readObject();
@@ -50,28 +52,28 @@ public class ServerThread extends Thread {
 
 					// Add user to the list
 					users.addUser(message, message2, message3, message4);
-				// } else if (message.equalsIgnoreCase("2")) {
-				// 	// message = "name"+"*"+"author"+"?"+"name1"+"*"+"author1"+"?";
-				// 	message = lib.getList();
+					// Handle login
+				} else if (message.equalsIgnoreCase("2")) {
+					
+					sendMessage("Enter Email:");
+					message = (String) in.readObject();
 
-				// 	// Option 1
-				// 	// sendMessage(message);
+					sendMessage("Enter ID:");
+					message2 = (String) in.readObject();
 
-				// 	// Option2
-				// 	String[] books = message.split("\\?");
+					// Check if valid user
+					message3 = users.getLoginDetails();
+					String[] employees = message3.split("\\?");
 
-				// 	sendMessage("" + books.length);
+					for(int i=0; i<employees.length; i++) {
+						String[] details = employees[i].split("//?");
 
-				// 	for (int i = 0; i < books.length; i++) {
-				// 		String[] details = books[i].split("\\*");
-
-				// 		sendMessage(details[0]);
-				// 		sendMessage(details[1]);
-
-				// 	}
+						if(details[0].equalsIgnoreCase(message)&& details[1].equalsIgnoreCase(message2)) {
+							boolean success = true;
+							break;
+						}
+					}
 				}
-				// message2 = users.getList();
-				// sendMessage(message2);
 
 				sendMessage("Please enter 1 to repeat or 2 to exit");
 				message = (String) in.readObject();
