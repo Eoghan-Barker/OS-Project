@@ -9,6 +9,7 @@ public class ServerThread extends Thread {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private String message, message2, message3, message4;
+	private Users users;
 
 	public ServerThread(Socket s) {
 		socket = s;
@@ -29,7 +30,7 @@ public class ServerThread extends Thread {
 			do {
 				sendMessage(
 						"Welcome to the Bug Tracking Server." +
-								" Please chose and option:\n" +
+								" Please choose an option\n" +
 								"1. Register with the system.\n" +
 								"2. Log-in");
 				message = (String) in.readObject();
@@ -47,28 +48,30 @@ public class ServerThread extends Thread {
 					sendMessage("Enter Department:");
 					message4 = (String) in.readObject();
 
-					// Add book to the list....
-					lib.addBook(message, message2);
-				} else if (message.equalsIgnoreCase("2")) {
-					// message = "name"+"*"+"author"+"?"+"name1"+"*"+"author1"+"?";
-					message = lib.getList();
+					// Add user to the list
+					users.addUser(message, message2, message3, message4);
+				// } else if (message.equalsIgnoreCase("2")) {
+				// 	// message = "name"+"*"+"author"+"?"+"name1"+"*"+"author1"+"?";
+				// 	message = lib.getList();
 
-					// Option 1
-					// sendMessage(message);
+				// 	// Option 1
+				// 	// sendMessage(message);
 
-					// Option2
-					String[] books = message.split("\\?");
+				// 	// Option2
+				// 	String[] books = message.split("\\?");
 
-					sendMessage("" + books.length);
+				// 	sendMessage("" + books.length);
 
-					for (int i = 0; i < books.length; i++) {
-						String[] details = books[i].split("\\*");
+				// 	for (int i = 0; i < books.length; i++) {
+				// 		String[] details = books[i].split("\\*");
 
-						sendMessage(details[0]);
-						sendMessage(details[1]);
+				// 		sendMessage(details[0]);
+				// 		sendMessage(details[1]);
 
-					}
+				// 	}
 				}
+				// message2 = users.getList();
+				// sendMessage(message2);
 
 				sendMessage("Please enter 1 to repeat or 2 to exit");
 				message = (String) in.readObject();

@@ -1,6 +1,5 @@
 public class Employee {
-
-	private String name;
+    private String name;
 	private String id;
     private String email;
     private String department;
@@ -20,4 +19,11 @@ public class Employee {
 		return id;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
 }
