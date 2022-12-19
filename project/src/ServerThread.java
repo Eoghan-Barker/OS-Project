@@ -33,7 +33,8 @@ public class ServerThread extends Thread {
 						"Welcome to the Bug Tracking Server." +
 								" Please choose an option\n" +
 								"1. Register with the system.\n" +
-								"2. Log-in");
+								"2. Log-in. \n" +
+								"3. Exit.");
 				message = (String) in.readObject();
 
 				// Handle register
@@ -54,31 +55,27 @@ public class ServerThread extends Thread {
 					users.addUser(message, message2, message3, message4);
 					// Handle login
 				} else if (message.equalsIgnoreCase("2")) {
-					
+
 					sendMessage("Enter Email:");
 					message = (String) in.readObject();
 
 					sendMessage("Enter ID:");
 					message2 = (String) in.readObject();
 
-					// Check if valid user
-					message3 = users.getLoginDetails();
-					String[] employees = message3.split("\\?");
+					if (validateLogin(message, message2)) {
+						sendMessage("Login successful");
+						sendMessage("1. Add a bug record" +
+								"2. Assign a bug to a registered user" +
+								"3. Display all unassigned bugs" +
+								"4. Update the status of a bug");
 
-					for(int i=0; i<employees.length; i++) {
-						String[] details = employees[i].split("//?");
+						message = (String) in.readObject();
 
-						if(details[0].equalsIgnoreCase(message)&& details[1].equalsIgnoreCase(message2)) {
-							boolean success = true;
-							break;
-						}
+					} else {
+						sendMessage("Login failed");
 					}
 				}
-
-				sendMessage("Please enter 1 to repeat or 2 to exit");
-				message = (String) in.readObject();
-
-			} while (message.equalsIgnoreCase("1"));
+			} while (!message.equalsIgnoreCase("1"));
 		} catch (IOException e) {
 
 		} catch (ClassNotFoundException e) {
@@ -94,6 +91,24 @@ public class ServerThread extends Thread {
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
 		}
+	}
+
+	private boolean validateLogin(String msg1, String msg2) {
+		boolean success = false;
+		String msgCheck;
+
+		msgCheck = users.getLoginDetails();
+		String[] employees = msgCheck.split("\\?");
+
+		for (int i = 0; i < employees.length; i++) {
+			String[] details = employees[i].split("\\*");
+
+			if (details[0].equalsIgnoreCase(msg1) && details[1].equalsIgnoreCase(msg2)) {
+				success = true;
+				break;
+			}
+		}
+		return success;
 	}
 
 }

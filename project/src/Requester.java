@@ -44,23 +44,29 @@ public class Requester {
 
 				} else if (message.equalsIgnoreCase("2")) {
 					
+					// Enter email
 					message = (String) in.readObject();
 					System.out.println(message);
 					message = input.nextLine();
 					sendMessage(message);
 
+					// Enter ID
 					message = (String) in.readObject();
 					System.out.println(message);
 					message = input.nextLine();
 					sendMessage(message);
 
+					// Check if valid
+					message = (String) in.readObject();
+					System.out.println(message);
+					if(message.equalsIgnoreCase("Login successful")){
+						message = (String) in.readObject();
+						System.out.println(message);
+						message = input.nextLine();
+						sendMessage(message);
+					}
 				}
-
-				message = (String) in.readObject();
-				System.out.println(message);
-				message = input.nextLine();
-				sendMessage(message);
-			} while (message.equalsIgnoreCase("1"));
+			} while (!message.equalsIgnoreCase("3"));
 		} catch (ClassNotFoundException e) {
 
 		} catch (UnknownHostException unknownHost) {
