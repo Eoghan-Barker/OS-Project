@@ -10,6 +10,7 @@ public class ServerThread extends Thread {
 	private ObjectInputStream in;
 	private String message, message2, message3, message4;
 	private Users users;
+	private BugList bugs;
 
 	public ServerThread(Socket s, Users u) {
 		socket = s;
@@ -69,13 +70,39 @@ public class ServerThread extends Thread {
 								"3. Display all unassigned bugs" +
 								"4. Update the status of a bug");
 
-						message = (String) in.readObject();
+						message2 = (String) in.readObject();
 
+						if (message2.equalsIgnoreCase("1")) {
+							//add bug
+
+							sendMessage("Enter Application Name:");
+							message = (String) in.readObject();
+
+							sendMessage("Choose Platform(Windows, Mac, Unix):");
+							message2 = (String) in.readObject();
+
+							sendMessage("Enter problem description:");
+							message3 = (String) in.readObject();
+
+							// Add bug to the list
+							bugs.addBug(message, message2, message3);
+						} else if (message2.equalsIgnoreCase("2")) {
+							// assign bug
+							sendMessage("Choose a bug to be assigned:" + 
+								"");
+
+						} else if (message2.equalsIgnoreCase("3")) {
+							// view bugs
+
+						} else if (message2.equalsIgnoreCase("4")) {
+							// update bug
+
+						}
 					} else {
 						sendMessage("Login failed");
 					}
 				}
-			} while (!message.equalsIgnoreCase("1"));
+			} while (!message.equalsIgnoreCase("3"));
 		} catch (IOException e) {
 
 		} catch (ClassNotFoundException e) {
@@ -110,5 +137,4 @@ public class ServerThread extends Thread {
 		}
 		return success;
 	}
-
 }

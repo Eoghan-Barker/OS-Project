@@ -7,7 +7,7 @@ public class Requester {
 	Socket requestSocket;
 	ObjectOutputStream out;
 	ObjectInputStream in;
-	String message;
+	String message, message2;
 	Scanner input;
 
 	Requester() {
@@ -62,8 +62,21 @@ public class Requester {
 					if(message.equalsIgnoreCase("Login successful")){
 						message = (String) in.readObject();
 						System.out.println(message);
-						message = input.nextLine();
-						sendMessage(message);
+						message2 = input.nextLine();
+						sendMessage(message2);
+
+						if (message2.equalsIgnoreCase("1")) {
+							
+						}
+						else if(message2.equalsIgnoreCase("2")){
+
+						}
+						else if(message2.equalsIgnoreCase("3")){
+
+						}
+						else if(message2.equalsIgnoreCase("4")){
+
+						}
 					}
 				}
 			} while (!message.equalsIgnoreCase("3"));
