@@ -34,16 +34,16 @@ public class Requester {
 				sendMessage(message);
 
 				if (message.equalsIgnoreCase("1")) {
-					
+
 					for (int i = 0; i < 4; i++) {
-					message = (String) in.readObject();
-					System.out.println(message);
-					message = input.nextLine();
-					sendMessage(message);
+						message = (String) in.readObject();
+						System.out.println(message);
+						message = input.nextLine();
+						sendMessage(message);
 					}
 
 				} else if (message.equalsIgnoreCase("2")) {
-					
+
 					// Enter email
 					message = (String) in.readObject();
 					System.out.println(message);
@@ -59,7 +59,7 @@ public class Requester {
 					// Check if valid
 					message = (String) in.readObject();
 					System.out.println(message);
-					if(message.equalsIgnoreCase("Login successful")){
+					if (message.equalsIgnoreCase("Login successful")) {
 						message = (String) in.readObject();
 						System.out.println(message);
 						message2 = input.nextLine();
@@ -80,8 +80,7 @@ public class Requester {
 							System.out.println(message);
 							message2 = input.nextLine();
 							sendMessage(message2);
-						}
-						else if(message2.equalsIgnoreCase("2")){
+						} else if (message2.equalsIgnoreCase("2")) {
 							message = (String) in.readObject();
 							System.out.println(message);
 							message2 = input.nextLine();
@@ -91,12 +90,22 @@ public class Requester {
 							System.out.println(message);
 							message2 = input.nextLine();
 							sendMessage(message2);
-						}
-						else if(message2.equalsIgnoreCase("3")){
+						} else if (message2.equalsIgnoreCase("3")) {
+							message = (String) in.readObject();
+							System.out.println(message);
+						} else if (message2.equalsIgnoreCase("4")) {
+							message = (String) in.readObject();
+							System.out.println(message);
+							
+							message = (String) in.readObject();
+							System.out.println(message);
+							message = input.nextLine();
+							sendMessage(message);
 
-						}
-						else if(message2.equalsIgnoreCase("4")){
-
+							message = (String) in.readObject();
+							System.out.println(message);
+							message = input.nextLine();
+							sendMessage(message);
 						}
 					}
 				}

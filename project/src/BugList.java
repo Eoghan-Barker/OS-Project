@@ -14,6 +14,10 @@ public class BugList {
         bugList.add(temp);
     }
 
+    public synchronized void removeBug(int index) {
+        bugList.remove(index);
+    }
+
     public synchronized String getBugList() {
         Iterator<Bug> iter = bugList.iterator();
         Bug temp;
@@ -51,7 +55,7 @@ public class BugList {
         return result;
     }
 
-    // public synchronized void assignBug(int bugNum, int empNum){
-    //     bugList.get(bugNum).assignEmployee(empNum);
-    // }
+    public synchronized int getTotalBugs() {
+        return bugList.size();
+    }
 }

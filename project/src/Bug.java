@@ -27,6 +27,8 @@ public class Bug {
         dateObj = LocalDateTime.now();
         date = dateObj.format(dateFormatter);
 
+        status = Status.Open;
+
         switch (p.toUpperCase()) {
             case "WINDOWS":
                 platform = Platform.Windows;
@@ -74,14 +76,15 @@ public class Bug {
         switch (s) {
             case 1:
                 status = Status.Open;
+                employee = null;
                 break;
 
             case 2:
-                status = Status.Assigned;
+                status = Status.Closed;
                 break;
 
             case 3:
-                status = Status.Closed;
+                status = Status.Assigned;
                 break;
 
             default:
@@ -93,5 +96,6 @@ public class Bug {
 
     public void assignEmployee(Employee emp) {
         employee = emp;
+        status = Status.Assigned;
     }
 }
