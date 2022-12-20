@@ -66,6 +66,10 @@ public class Bug {
         return status;
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
+
     public void setStatus(int s) {
         switch (s) {
             case 1:
@@ -87,7 +91,7 @@ public class Bug {
         }
     }
 
-    public void assignBug(Users u) {
-        
+    public void assignEmployee(Employee emp) {
+        employee = emp;
     }
 }

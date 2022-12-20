@@ -41,4 +41,29 @@ public class Users {
 
         return result;
     }
+
+    public synchronized String getUserNames() {
+        Iterator<Employee> iter = userList.iterator();
+        Employee temp;
+        String result = "";
+        int counter = 0;
+
+        while (iter.hasNext()) {
+            temp = iter.next();
+            counter++;
+            result = result + counter + ") " + temp.getName() + "\n";
+        }
+
+        return result;
+    }
+
+    public synchronized int getTotalUsers() {
+        return userList.size();
+    }
+
+    public synchronized Employee getAnEmp(int index) {
+        Employee result = userList.get(index);
+
+        return result;
+    }
 }

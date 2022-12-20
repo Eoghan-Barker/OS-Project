@@ -12,12 +12,16 @@ public class ServerThread extends Thread {
 	private Users users;
 	private BugList bugs;
 
-	public ServerThread(Socket s, Users u) {
+	public ServerThread(Socket s, Users u, BugList b) {
 		socket = s;
 		users = u;
+		bugs = b;
 	}
 
 	public void run() {
+		Bug tempBug;
+		Employee tempEmp;
+
 		// 3. get Input and Output streams
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
@@ -65,10 +69,10 @@ public class ServerThread extends Thread {
 
 					if (validateLogin(message, message2)) {
 						sendMessage("Login successful");
-						sendMessage("1. Add a bug record" +
-								"2. Assign a bug to a registered user" +
-								"3. Display all unassigned bugs" +
-								"4. Update the status of a bug");
+						sendMessage("1. Add a bug record\n" +
+								"2. Assign a bug to a registered user\n" +
+								"3. Display all unassigned bugs\n" +
+								"4. Update the status of a bug\n");
 
 						message2 = (String) in.readObject();
 
@@ -84,12 +88,27 @@ public class ServerThread extends Thread {
 							sendMessage("Enter problem description:");
 							message3 = (String) in.readObject();
 
-							// Add bug to the list
+							//Add bug to the list
 							bugs.addBug(message, message2, message3);
+
+
+							
 						} else if (message2.equalsIgnoreCase("2")) {
 							// assign bug
-							sendMessage("Choose a bug to be assigned:" + 
-								"");
+							message = bugs.getBugNames(); 
+							sendMessage("Choose a bug to be assigned:\n" + message);
+							message = (String) in.readObject();
+
+							message2 = users.getUserNames(); 
+							sendMessage("Choose an employee to assign it to:\n" + message2);
+							message2 = (String) in.readObject();
+
+
+							//bugs.assignBug(Integer.parseInt(message), Integer.parseInt(message));
+							tempBug = bugs.getABug(Integer.parseInt(message));
+							tempEmp = users.getAnEmp(Integer.parseInt(message2));
+
+							tempBug.assignEmployee(tempEmp);
 
 						} else if (message2.equalsIgnoreCase("3")) {
 							// view bugs

@@ -29,4 +29,29 @@ public class BugList {
 
         return result;
     }
+
+    public synchronized String getBugNames() {
+        Iterator<Bug> iter = bugList.iterator();
+        Bug temp;
+        String result = "";
+        int counter = 0;
+
+        while (iter.hasNext()) {
+            temp = iter.next();
+            counter++;
+            result = result + counter + ") " + temp.getName() + "\n";
+        }
+
+        return result;
+    }
+
+    public synchronized Bug getABug(int index) {
+        Bug result = bugList.get(index);
+
+        return result;
+    }
+
+    // public synchronized void assignBug(int bugNum, int empNum){
+    //     bugList.get(bugNum).assignEmployee(empNum);
+    // }
 }

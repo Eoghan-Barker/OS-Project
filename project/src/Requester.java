@@ -66,10 +66,31 @@ public class Requester {
 						sendMessage(message2);
 
 						if (message2.equalsIgnoreCase("1")) {
-							
+							message = (String) in.readObject();
+							System.out.println(message);
+							message2 = input.nextLine();
+							sendMessage(message2);
+
+							message = (String) in.readObject();
+							System.out.println(message);
+							message2 = input.nextLine();
+							sendMessage(message2);
+
+							message = (String) in.readObject();
+							System.out.println(message);
+							message2 = input.nextLine();
+							sendMessage(message2);
 						}
 						else if(message2.equalsIgnoreCase("2")){
+							message = (String) in.readObject();
+							System.out.println(message);
+							message2 = input.nextLine();
+							sendMessage(message2);
 
+							message = (String) in.readObject();
+							System.out.println(message);
+							message2 = input.nextLine();
+							sendMessage(message2);
 						}
 						else if(message2.equalsIgnoreCase("3")){
 
