@@ -69,81 +69,81 @@ public class ServerThread extends Thread {
 
 					if (validateLogin(message, message2)) {
 						sendMessage("Login successful");
-						sendMessage("1. Add a bug record\n" +
-								"2. Assign a bug to a registered user\n" +
-								"3. Display all unassigned bugs\n" +
-								"4. Update the status of a bug\n");
+						do {
+							sendMessage("1. Add a bug record\n" +
+									"2. Assign a bug to a registered user\n" +
+									"3. Display all unassigned bugs\n" +
+									"4. Update the status of a bug\n" +
+									"5. Logout\n");
 
-						message2 = (String) in.readObject();
-
-						if (message2.equalsIgnoreCase("1")) {
-							//add bug
-
-							sendMessage("Enter Application Name:");
-							message = (String) in.readObject();
-
-							sendMessage("Choose Platform(Windows, Mac, Unix):");
 							message2 = (String) in.readObject();
 
-							sendMessage("Enter problem description:");
-							message3 = (String) in.readObject();
+							if (message2.equalsIgnoreCase("1")) {
+								// add bug
 
-							//Add bug to the list
-							bugs.addBug(message, message2, message3);
+								sendMessage("Enter Application Name:");
+								message = (String) in.readObject();
 
+								sendMessage("Choose Platform(Windows, Mac, Unix):");
+								message2 = (String) in.readObject();
 
-							
-						} else if (message2.equalsIgnoreCase("2")) {
-							// assign bug
-							message = bugs.getBugNames(); 
-							sendMessage("Choose a bug to be assigned:\n" + message);
-							message = (String) in.readObject();
+								sendMessage("Enter problem description:");
+								message3 = (String) in.readObject();
 
-							message2 = users.getUserNames(); 
-							sendMessage("Choose an employee to assign it to:\n" + message2);
-							message2 = (String) in.readObject();
+								// Add bug to the list
+								bugs.addBug(message, message2, message3);
 
+							} else if (message2.equalsIgnoreCase("2")) {
+								// assign bug
+								message = bugs.getBugNames();
+								sendMessage("Choose a bug to be assigned:\n" + message);
+								message = (String) in.readObject();
 
-							tempBug = bugs.getABug(Integer.parseInt(message)-1);
-							tempEmp = users.getAnEmp(Integer.parseInt(message2)-1);
+								message2 = users.getUserNames();
+								sendMessage("Choose an employee to assign it to:\n" + message2);
+								message2 = (String) in.readObject();
 
-							tempBug.assignEmployee(tempEmp);
+								tempBug = bugs.getABug(Integer.parseInt(message) - 1);
+								tempEmp = users.getAnEmp(Integer.parseInt(message2) - 1);
 
-						} else if (message2.equalsIgnoreCase("3")) {
-							// view bugs
-							message = "Unassigned Bugs: \n";
-							for (int i = 0; i < bugs.getTotalBugs(); i++) {
-								tempBug = bugs.getABug(i);
-								System.out.println(tempBug.getStatus());
-								if(tempBug.getStatus() == Status.Open){
-									message = message + 
-										"App Name: " + tempBug.getName() + " \n" +
-										"Date: " + tempBug.getDate() + "\n" +
-										"Platform: " + tempBug.getPlatform() + "\n" +
-										"Description: " + tempBug.getDescription() + "\n\n";
+								tempBug.assignEmployee(tempEmp);
+
+							} else if (message2.equalsIgnoreCase("3")) {
+								// view bugs
+								message = "Unassigned Bugs: \n";
+								for (int i = 0; i < bugs.getTotalBugs(); i++) {
+									tempBug = bugs.getABug(i);
+									System.out.println(tempBug.getStatus());
+									if (tempBug.getStatus() == Status.Open) {
+										message = message +
+												"App Name: " + tempBug.getName() + " \n" +
+												"Date: " + tempBug.getDate() + "\n" +
+												"Platform: " + tempBug.getPlatform() + "\n" +
+												"Description: " + tempBug.getDescription() + "\n\n";
+									}
+								}
+
+								sendMessage(message);
+
+							} else if (message2.equalsIgnoreCase("4")) {
+								// update bug
+								sendMessage("Choose the bug you wish to update the status of: \n");
+								message = bugs.getBugNames();
+								sendMessage(message);
+								message = (String) in.readObject();
+
+								sendMessage("Choose a Status(1 or 2):\n" +
+										"1) Open\n2) Closed\n");
+								message2 = (String) in.readObject();
+
+								// update the status of selected bug
+								bugs.getABug(Integer.parseInt(message) - 1).setStatus(Integer.parseInt(message2));
+								// If status set to closed the remove bug from list
+								if (message2.equalsIgnoreCase("2")) {
+									bugs.removeBug(Integer.parseInt(message) - 1);
 								}
 							}
-
-							sendMessage(message);
-
-						} else if (message2.equalsIgnoreCase("4")) {
-							// update bug
-							sendMessage("Choose the bug you wish to update the status of: \n");
-							message = bugs.getBugNames(); 
-							sendMessage(message);
-							message = (String) in.readObject();
-
-							sendMessage("Choose a Status(1 or 2):\n" + 
-								"1) Open\n2) Closed\n");
-							message2 = (String) in.readObject();
-
-							// update the status of selected bug
-							bugs.getABug(Integer.parseInt(message)-1).setStatus(Integer.parseInt(message2));
-							// If status set to closed the remove bug from list
-							if(message2.equalsIgnoreCase("2")){
-								bugs.removeBug(Integer.parseInt(message)-1);
-							}
-						}
+						} while (!message2.equalsIgnoreCase("5"));
 					} else {
 						sendMessage("Login failed");
 					}

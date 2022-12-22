@@ -60,53 +60,55 @@ public class Requester {
 					message = (String) in.readObject();
 					System.out.println(message);
 					if (message.equalsIgnoreCase("Login successful")) {
-						message = (String) in.readObject();
-						System.out.println(message);
-						message2 = input.nextLine();
-						sendMessage(message2);
-
-						if (message2.equalsIgnoreCase("1")) {
+						do {
 							message = (String) in.readObject();
 							System.out.println(message);
 							message2 = input.nextLine();
 							sendMessage(message2);
 
-							message = (String) in.readObject();
-							System.out.println(message);
-							message2 = input.nextLine();
-							sendMessage(message2);
+							if (message2.equalsIgnoreCase("1")) {
+								message = (String) in.readObject();
+								System.out.println(message);
+								message2 = input.nextLine();
+								sendMessage(message2);
 
-							message = (String) in.readObject();
-							System.out.println(message);
-							message2 = input.nextLine();
-							sendMessage(message2);
-						} else if (message2.equalsIgnoreCase("2")) {
-							message = (String) in.readObject();
-							System.out.println(message);
-							message2 = input.nextLine();
-							sendMessage(message2);
+								message = (String) in.readObject();
+								System.out.println(message);
+								message2 = input.nextLine();
+								sendMessage(message2);
 
-							message = (String) in.readObject();
-							System.out.println(message);
-							message2 = input.nextLine();
-							sendMessage(message2);
-						} else if (message2.equalsIgnoreCase("3")) {
-							message = (String) in.readObject();
-							System.out.println(message);
-						} else if (message2.equalsIgnoreCase("4")) {
-							message = (String) in.readObject();
-							System.out.println(message);
-							
-							message = (String) in.readObject();
-							System.out.println(message);
-							message = input.nextLine();
-							sendMessage(message);
+								message = (String) in.readObject();
+								System.out.println(message);
+								message2 = input.nextLine();
+								sendMessage(message2);
+							} else if (message2.equalsIgnoreCase("2")) {
+								message = (String) in.readObject();
+								System.out.println(message);
+								message2 = input.nextLine();
+								sendMessage(message2);
 
-							message = (String) in.readObject();
-							System.out.println(message);
-							message = input.nextLine();
-							sendMessage(message);
-						}
+								message = (String) in.readObject();
+								System.out.println(message);
+								message2 = input.nextLine();
+								sendMessage(message2);
+							} else if (message2.equalsIgnoreCase("3")) {
+								message = (String) in.readObject();
+								System.out.println(message);
+							} else if (message2.equalsIgnoreCase("4")) {
+								message = (String) in.readObject();
+								System.out.println(message);
+
+								message = (String) in.readObject();
+								System.out.println(message);
+								message = input.nextLine();
+								sendMessage(message);
+
+								message = (String) in.readObject();
+								System.out.println(message);
+								message = input.nextLine();
+								sendMessage(message);
+							}
+						} while (!message2.equalsIgnoreCase("5"));
 					}
 				}
 			} while (!message.equalsIgnoreCase("3"));
