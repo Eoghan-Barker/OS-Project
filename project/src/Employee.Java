@@ -3,6 +3,7 @@ public class Employee {
 	private String id;
     private String email;
     private String department;
+	private String bugID;
 
 	public Employee(String n, String id, String e, String d) {
 		name = n;
@@ -25,5 +26,13 @@ public class Employee {
 
 	public String getDepartment() {
 		return department;
+	}
+
+	public String getBugID() {
+		return bugID;
+	}
+
+	public void assignBug(String id){
+		bugID = id;
 	}
 }

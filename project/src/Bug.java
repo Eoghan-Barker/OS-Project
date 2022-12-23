@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicInteger;
 
 enum Platform {
     Windows, Mac, Unix
@@ -10,17 +11,19 @@ enum Status {
 };
 
 public class Bug {
+    private String bugID;
     private String appName;
     private String date;
     private String description;
     private Platform platform;
     private Status status;
-    private Employee employee = null;
 
     private LocalDateTime dateObj;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    private static AtomicInteger idCounter = new AtomicInteger();
 
     public Bug(String n, String p, String desc) {
+        bugID = createBugID();
         appName = n;
         description = desc;
 
@@ -48,6 +51,10 @@ public class Bug {
         }
     }
 
+    public String getBugID() {
+        return bugID;
+    }
+
     public String getName() {
         return appName;
     }
@@ -68,15 +75,14 @@ public class Bug {
         return status;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public static String createBugID(){
+        return String.valueOf(idCounter.getAndIncrement());
     }
 
     public void setStatus(int s) {
         switch (s) {
             case 1:
                 status = Status.Open;
-                employee = null;
                 break;
 
             case 2:
@@ -92,10 +98,5 @@ public class Bug {
                 break;
 
         }
-    }
-
-    public void assignEmployee(Employee emp) {
-        employee = emp;
-        status = Status.Assigned;
     }
 }

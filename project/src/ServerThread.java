@@ -56,8 +56,15 @@ public class ServerThread extends Thread {
 					sendMessage("Enter Department:");
 					message4 = (String) in.readObject();
 
-					// Add user to the list
-					users.addUser(message, message2, message3, message4);
+					// Check if email and ID are unique
+					if (checkUnique(message3, message2)) {
+						// Add user to the list
+						users.addUser(message, message2, message3, message4);
+						sendMessage("\n\nRegistration successful.\n\n");
+					} else {
+						sendMessage("\n\nEmail and ID must be unique.\n\n");
+					}
+
 					// Handle login
 				} else if (message.equalsIgnoreCase("2")) {
 
@@ -95,7 +102,7 @@ public class ServerThread extends Thread {
 
 							} else if (message2.equalsIgnoreCase("2")) {
 								// assign bug
-								message = bugs.getBugNames();
+								message = bugs.getBugIDs();
 								sendMessage("Choose a bug to be assigned:\n" + message);
 								message = (String) in.readObject();
 
@@ -103,19 +110,21 @@ public class ServerThread extends Thread {
 								sendMessage("Choose an employee to assign it to:\n" + message2);
 								message2 = (String) in.readObject();
 
-								tempBug = bugs.getABug(Integer.parseInt(message) - 1);
+								tempBug = bugs.getABug(Integer.parseInt(message));
 								tempEmp = users.getAnEmp(Integer.parseInt(message2) - 1);
 
-								tempBug.assignEmployee(tempEmp);
+								// assign bugId to the employee and set bug status to assigned
+								tempEmp.assignBug(tempBug.getBugID());
+								tempBug.setStatus(3);
 
 							} else if (message2.equalsIgnoreCase("3")) {
 								// view bugs
 								message = "Unassigned Bugs: \n";
 								for (int i = 0; i < bugs.getTotalBugs(); i++) {
 									tempBug = bugs.getABug(i);
-									System.out.println(tempBug.getStatus());
 									if (tempBug.getStatus() == Status.Open) {
 										message = message +
+												"Bug ID: " + tempBug.getBugID() + " \n" +
 												"App Name: " + tempBug.getName() + " \n" +
 												"Date: " + tempBug.getDate() + "\n" +
 												"Platform: " + tempBug.getPlatform() + "\n" +
@@ -128,7 +137,7 @@ public class ServerThread extends Thread {
 							} else if (message2.equalsIgnoreCase("4")) {
 								// update bug
 								sendMessage("Choose the bug you wish to update the status of: \n");
-								message = bugs.getBugNames();
+								message = bugs.getBugIDs();
 								sendMessage(message);
 								message = (String) in.readObject();
 
@@ -137,7 +146,7 @@ public class ServerThread extends Thread {
 								message2 = (String) in.readObject();
 
 								// update the status of selected bug
-								bugs.getABug(Integer.parseInt(message) - 1).setStatus(Integer.parseInt(message2));
+								bugs.getABug(Integer.parseInt(message)).setStatus(Integer.parseInt(message2));
 								// If status set to closed the remove bug from list
 								if (message2.equalsIgnoreCase("2")) {
 									bugs.removeBug(Integer.parseInt(message) - 1);
@@ -182,5 +191,29 @@ public class ServerThread extends Thread {
 			}
 		}
 		return success;
+	}
+
+	private boolean checkUnique(String email, String id) {
+		boolean unique = true;
+		String msgCheck;
+
+		msgCheck = users.getLoginDetails();
+
+		// If list is empty then login is unique
+		if (!msgCheck.equalsIgnoreCase("")) {
+			String[] employees = msgCheck.split("\\?");
+
+			for (int i = 0; i < employees.length; i++) {
+
+				String[] details = employees[i].split("\\*");
+
+				if (details[0].equalsIgnoreCase(email) || details[1].equalsIgnoreCase(id)) {
+					unique = false;
+					break;
+				}
+			}
+		}
+
+		return unique;
 	}
 }

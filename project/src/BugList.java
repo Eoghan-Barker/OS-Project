@@ -4,6 +4,7 @@ import java.util.LinkedList;
 public class BugList {
 
     private LinkedList<Bug> bugList;
+    
 
     public BugList() {
         bugList = new LinkedList<Bug>();
@@ -24,7 +25,8 @@ public class BugList {
         String result = "";
         while (iter.hasNext()) {
             temp = iter.next();
-            result = result + temp.getName() + "*"
+            result = result + temp.getBugID() + "*"
+                    + temp.getName() + "*"
                     + temp.getDate() + "*"
                     + temp.getDescription() + "*"
                     + temp.getPlatform() + "*"
@@ -34,16 +36,14 @@ public class BugList {
         return result;
     }
 
-    public synchronized String getBugNames() {
+    public synchronized String getBugIDs() {
         Iterator<Bug> iter = bugList.iterator();
         Bug temp;
         String result = "";
-        int counter = 0;
 
         while (iter.hasNext()) {
             temp = iter.next();
-            counter++;
-            result = result + counter + ") " + temp.getName() + "\n";
+            result = result + temp.getBugID() + "\n";
         }
 
         return result;

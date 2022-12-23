@@ -42,6 +42,9 @@ public class Requester {
 						sendMessage(message);
 					}
 
+					message = (String) in.readObject();
+					System.out.println(message);
+
 				} else if (message.equalsIgnoreCase("2")) {
 
 					// Enter email
