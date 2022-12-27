@@ -1,18 +1,14 @@
-## Getting Started
+# Design Choices
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+I used the book example from the labs to setup the initial client/server connection and the message passing method.
 
-## Folder Structure
+As the bugList and users list are shared between clients their methods use the synchronized keyword to prevent inconsistent data.
 
-The workspace contains two folders by default, where:
+For the bugIDs I used an AtomicInteger as a counter to avoid multiple bugs having the same ID while keeping the IDs uniform and simple.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+I used enums for the bug status and bug platform for type safety, consistency and error prevention
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+# How it works
 
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+When the server is started it listens for a connection on port 2004. When the client connects the server starts a new thread. The client and the thread communicate and the client can read and write to the shared lists.
