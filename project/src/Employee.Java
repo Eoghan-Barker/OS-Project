@@ -1,15 +1,15 @@
 public class Employee {
-    private String name;
+	private String name;
 	private String id;
-    private String email;
-    private String department;
+	private String email;
+	private String department;
 	private String bugID;
 
 	public Employee(String n, String id, String e, String d) {
 		name = n;
 		this.id = id;
-        email = e;
-        department = d;
+		email = e;
+		department = d;
 	}
 
 	public String getName() {
@@ -32,7 +32,8 @@ public class Employee {
 		return bugID;
 	}
 
-	public void assignBug(String id){
+	// Add a bugID to the employee
+	public void assignBug(String id) {
 		bugID = id;
 	}
 }

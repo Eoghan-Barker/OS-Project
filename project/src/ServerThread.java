@@ -22,7 +22,7 @@ public class ServerThread extends Thread {
 		Bug tempBug;
 		Employee tempEmp;
 
-		// 3. get Input and Output streams
+		// 2. get Input and Output streams
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
 			out.flush();
@@ -31,9 +31,10 @@ public class ServerThread extends Thread {
 			e.printStackTrace();
 		}
 
-		// Conversation from the server to the client
+		// 3: Conversation from the server to the client
 		try {
 			do {
+				// 0 - send first menu, recieve option 1-3
 				sendMessage(
 						"Welcome to the Bug Tracking Server." +
 								" Please choose an option\n" +
@@ -44,15 +45,13 @@ public class ServerThread extends Thread {
 
 				// Handle register
 				if (message.equalsIgnoreCase("1")) {
+					// 1.1 - Send registration details
 					sendMessage("Enter username:");
 					message = (String) in.readObject();
-
 					sendMessage("Enter Employee ID:");
 					message2 = (String) in.readObject();
-
 					sendMessage("Enter Email:");
 					message3 = (String) in.readObject();
-
 					sendMessage("Enter Department:");
 					message4 = (String) in.readObject();
 
@@ -60,66 +59,77 @@ public class ServerThread extends Thread {
 					if (checkUnique(message3, message2)) {
 						// Add user to the list
 						users.addUser(message, message2, message3, message4);
+						// 1.2 - Send registration successful
 						sendMessage("\n\nRegistration successful.\n\n");
 					} else {
+						// 1.2 - Send registration failed
 						sendMessage("\n\nEmail and ID must be unique.\n\n");
 					}
 
-					// Handle login
+				// Handle login
 				} else if (message.equalsIgnoreCase("2")) {
 
+					// 2.1 - Send email request
 					sendMessage("Enter Email:");
 					message = (String) in.readObject();
 
+					// 2.2 - Send ID request
 					sendMessage("Enter ID:");
 					message2 = (String) in.readObject();
 
+					// Check if email and ID are registered
 					if (validateLogin(message, message2)) {
+						//2.3 - Send login successful message
 						sendMessage("Login successful");
+
+						// Loop to stay in this menu until user logs out
 						do {
+							// 3.0 - Send 2nd menu and get user choice 1-5
 							sendMessage("1. Add a bug record\n" +
 									"2. Assign a bug to a registered user\n" +
 									"3. Display all unassigned bugs\n" +
 									"4. Update the status of a bug\n" +
 									"5. Logout\n");
-
 							message2 = (String) in.readObject();
 
+							// add bug
 							if (message2.equalsIgnoreCase("1")) {
-								// add bug
 
+								// 3.1 - Get bug details
 								sendMessage("Enter Application Name:");
 								message = (String) in.readObject();
-
 								sendMessage("Choose Platform(Windows, Mac, Unix):");
 								message2 = (String) in.readObject();
-
 								sendMessage("Enter problem description:");
 								message3 = (String) in.readObject();
 
 								// Add bug to the list
 								bugs.addBug(message, message2, message3);
 
+							// Assign Bug to a User
 							} else if (message2.equalsIgnoreCase("2")) {
-								// assign bug
+								
+								// 3.2 - Display all bugs and users and get users choice
 								message = bugs.getBugIDs();
-								sendMessage("Choose a bug to be assigned:\n" + message);
+								sendMessage("Choose the bugID of the bug to be assigned:\n" + message);
 								message = (String) in.readObject();
-
 								message2 = users.getUserNames();
 								sendMessage("Choose an employee to assign it to:\n" + message2);
 								message2 = (String) in.readObject();
 
+								// Get selected bug and user
 								tempBug = bugs.getABug(Integer.parseInt(message));
 								tempEmp = users.getAnEmp(Integer.parseInt(message2) - 1);
-
-								// assign bugId to the employee and set bug status to assigned
+								// Assign bugId to the employee and set bug status to assigned
 								tempEmp.assignBug(tempBug.getBugID());
 								tempBug.setStatus(3);
 
+							// Display unnassigned bugs
 							} else if (message2.equalsIgnoreCase("3")) {
-								// view bugs
+								
 								message = "Unassigned Bugs: \n";
+								// Search through each bug in the list and add it to 
+								// the message if it's status is open 
 								for (int i = 0; i < bugs.getTotalBugs(); i++) {
 									tempBug = bugs.getABug(i);
 									if (tempBug.getStatus() == Status.Open) {
@@ -132,15 +142,21 @@ public class ServerThread extends Thread {
 									}
 								}
 
+								// 3.3 - Send list of unnassigned bugs
 								sendMessage(message);
 
+							// Update bug status
 							} else if (message2.equalsIgnoreCase("4")) {
-								// update bug
+
+								// 3.4 - Prompt
 								sendMessage("Choose the bug you wish to update the status of: \n");
+								
+								// 3.5 - Send list of bugIDs and get users choice
 								message = bugs.getBugIDs();
 								sendMessage(message);
 								message = (String) in.readObject();
 
+								// 3.6 - Get new status
 								sendMessage("Choose a Status(1 or 2):\n" +
 										"1) Open\n2) Closed\n");
 								message2 = (String) in.readObject();
@@ -149,21 +165,26 @@ public class ServerThread extends Thread {
 								bugs.getABug(Integer.parseInt(message)).setStatus(Integer.parseInt(message2));
 								// If status set to closed the remove bug from list
 								if (message2.equalsIgnoreCase("2")) {
-									bugs.removeBug(Integer.parseInt(message) - 1);
+									bugs.removeBug(Integer.parseInt(message));
 								}
 							}
 						} while (!message2.equalsIgnoreCase("5"));
 					} else {
+						// 2.3 - send login failure message
 						sendMessage("Login failed");
 					}
 				}
 			} while (!message.equalsIgnoreCase("3"));
+
+			// Provider.saveToFile();
 		} catch (IOException e) {
 
 		} catch (ClassNotFoundException e) {
 
 		}
 	}
+
+	
 
 	public void sendMessage(String msg) {
 		try {
@@ -175,15 +196,18 @@ public class ServerThread extends Thread {
 		}
 	}
 
+	// Check if login details match a user in the list
 	private boolean validateLogin(String msg1, String msg2) {
 		boolean success = false;
 		String msgCheck;
+		String[] employees;
+		String[] details;
 
 		msgCheck = users.getLoginDetails();
-		String[] employees = msgCheck.split("\\?");
+		employees = msgCheck.split("\\?");
 
 		for (int i = 0; i < employees.length; i++) {
-			String[] details = employees[i].split("\\*");
+			details = employees[i].split("\\*");
 
 			if (details[0].equalsIgnoreCase(msg1) && details[1].equalsIgnoreCase(msg2)) {
 				success = true;

@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Users {
+public class Users implements Serializable {
 
     private LinkedList<Employee> userList;
 
@@ -9,11 +10,13 @@ public class Users {
         userList = new LinkedList<Employee>();
     }
 
+    // Create a new employee and add it to the list
     public synchronized void addUser(String name, String id, String email, String department) {
         Employee temp = new Employee(name, id, email, department);
         userList.add(temp);
     }
 
+    // Get all employees and their details
     public synchronized String getUserList() {
         Iterator<Employee> iter = userList.iterator();
         Employee temp;
@@ -29,6 +32,7 @@ public class Users {
         return result;
     }
 
+    // Get all employee's ID and email with regex for splitting
     public synchronized String getLoginDetails() {
         Iterator<Employee> iter = userList.iterator();
         Employee temp;
@@ -42,6 +46,7 @@ public class Users {
         return result;
     }
 
+    // Get all user names in a menu format
     public synchronized String getUserNames() {
         Iterator<Employee> iter = userList.iterator();
         Employee temp;
@@ -57,10 +62,12 @@ public class Users {
         return result;
     }
 
+    // Get size of list
     public synchronized int getTotalUsers() {
         return userList.size();
     }
 
+    // Get an employee at a given index in the list
     public synchronized Employee getAnEmp(int index) {
         Employee result = userList.get(index);
 

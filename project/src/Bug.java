@@ -75,7 +75,9 @@ public class Bug {
         return status;
     }
 
-    public static String createBugID(){
+    // BugID is assigned to the next value in the counter
+    // The counter is an AtomicInteger for thread synchronization
+    public static String createBugID() {
         return String.valueOf(idCounter.getAndIncrement());
     }
 
