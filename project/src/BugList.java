@@ -92,14 +92,20 @@ public class BugList {
         String[] bugs;
         String[] details;
 
+        // Read in the data and split into each bug
         readIn = reader.nextLine();
         bugs = readIn.split("\\?");
 
+        // Create new bugs with the saved details and add to the list
         for (int i = 0; i < bugs.length; i++) {
             details = bugs[i].split("\\*");
 
             addBug(details[0], details[1], details[2], details[3], details[4], details[5]);
         }
+
+        // Set the idCounter used for creating bugIDs
+        // to continue from the highest saved bugID
+        Bug.setIdCounter(Integer.parseInt(bugList.getLast().getBugID()) + 1);
 
         reader.close();
     }

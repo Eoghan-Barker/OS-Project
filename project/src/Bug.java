@@ -133,4 +133,8 @@ public class Bug {
                 break;
         }
     }
+
+    public static void setIdCounter(int n) {
+        idCounter.set(n);
+    }
 }
