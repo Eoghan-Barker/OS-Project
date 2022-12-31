@@ -22,6 +22,7 @@ public class Bug {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     private static AtomicInteger idCounter = new AtomicInteger();
 
+    // cosntructor for user created bug
     public Bug(String n, String p, String desc) {
         bugID = createBugID();
         appName = n;
@@ -32,21 +33,32 @@ public class Bug {
 
         status = Status.Open;
 
-        switch (p.toUpperCase()) {
-            case "WINDOWS":
-                platform = Platform.Windows;
+        setPlatform(p);
+    }
+
+    // constructor for bug created from file
+    public Bug(String i, String n, String d, String desc, String p, String s) {
+        bugID = i;
+        appName = n;
+        date = d;
+        description = desc;
+        setPlatform(p);
+        
+        switch (s.toUpperCase()) {
+            case "OPEN":
+                status = Status.Open;
                 break;
 
-            case "MAC":
-                platform = Platform.Mac;
+            case "CLOSED":
+                status = Status.Closed;
                 break;
 
-            case "UNIX":
-                platform = Platform.Unix;
+            case "ASSIGNED":
+                status = Status.Assigned;
                 break;
 
             default:
-                platform = Platform.Windows;
+                status = Status.Open;
                 break;
         }
     }
@@ -99,6 +111,26 @@ public class Bug {
                 status = Status.Open;
                 break;
 
+        }
+    }
+
+    public void setPlatform(String p) {
+        switch (p.toUpperCase()) {
+            case "WINDOWS":
+                platform = Platform.Windows;
+                break;
+
+            case "MAC":
+                platform = Platform.Mac;
+                break;
+
+            case "UNIX":
+                platform = Platform.Unix;
+                break;
+
+            default:
+                platform = Platform.Windows;
+                break;
         }
     }
 }

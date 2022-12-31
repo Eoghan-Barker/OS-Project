@@ -1,10 +1,16 @@
-import java.io.Serializable;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Scanner;
 
-public class Users implements Serializable {
+public class Users {
 
     private LinkedList<Employee> userList;
+
+    private File userFile = new File("userList.txt");
 
     public Users() {
         userList = new LinkedList<Employee>();
@@ -26,7 +32,8 @@ public class Users implements Serializable {
             result = result + temp.getName() + "*"
                     + temp.getID() + "*"
                     + temp.getEmail() + "*"
-                    + temp.getDepartment() + "?";
+                    + temp.getDepartment() + "*"
+                    + temp.getBugID() + "?";
         }
 
         return result;
@@ -73,4 +80,33 @@ public class Users implements Serializable {
 
         return result;
     }
+
+        // Save the bug list to a file
+        public synchronized void saveUserList() throws IOException {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(userFile));
+            writer.append(getUserList());
+            
+            writer.close();
+    
+        }
+    
+        // Load the bug list from a file
+        public synchronized void loadUserList() throws IOException {
+            Scanner reader = new Scanner(userFile);
+            String readIn;
+            String[] users;
+            String[] details;
+    
+            readIn = reader.nextLine();
+            users = readIn.split("\\?");
+    
+            for (int i = 0; i < users.length; i++) {
+                details = users[i].split("\\*");
+    
+                addUser(details[0], details[1], details[2], details[3]);
+                userList.get(i).assignBug(details[4]);
+            }
+    
+            reader.close();
+        }
 }

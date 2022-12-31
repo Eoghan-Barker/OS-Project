@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.io.File;
 
 public class ServerThread extends Thread {
 
@@ -12,10 +13,32 @@ public class ServerThread extends Thread {
 	private Users users;
 	private BugList bugs;
 
-	public ServerThread(Socket s, Users u, BugList b) {
+	public ServerThread(Socket s, Users u, BugList b, File bf, File uf) {
 		socket = s;
 		users = u;
 		bugs = b;
+		// load in the lists
+		try {
+			// create the files if they dont exist
+			if(bf.createNewFile()) {
+				System.out.println("Bug file created");
+			}
+			else {
+				bugs.loadBugList();
+				System.out.println("Bug list loaded");
+			}
+			
+			if(uf.createNewFile()) {
+				System.out.println("User file created");
+			}
+			else {
+				users.loadUserList();
+				System.out.println("User list loaded");
+			}
+		} catch (IOException e) {
+			System.out.println("Error loading files");
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
@@ -169,6 +192,9 @@ public class ServerThread extends Thread {
 								}
 							}
 						} while (!message2.equalsIgnoreCase("5"));
+						// Save the shared objects to file
+						bugs.saveBugList();
+						users.saveUserList();
 					} else {
 						// 2.3 - send login failure message
 						sendMessage("Login failed");
