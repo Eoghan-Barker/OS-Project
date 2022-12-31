@@ -11,4 +11,4 @@ I used enums for the bug status and bug platform for type safety, consistency an
 
 # How it works
 
-When the server is started it listens for a connection on port 2004. When the client connects the server starts a new thread. The client and the thread communicate and the client can read and write to the shared lists.
+When the server is started it listens for a connection on port 2004. When the client connects the server starts a new thread. When a new serverThread starts it loads data from bugList.txt and userList.txt .The client and the thread communicate and the client can read and write to the shared lists. When the client disconnects the bug list and user list are saved to file.
